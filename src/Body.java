@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class Body {
     public double xMeters;
     public double yMeters;
@@ -5,6 +10,8 @@ public class Body {
     public MyVector velocityVector;
     public double massKG;
     public boolean lockPos;
+    public LinkedList<Coordinate> futureCordList = new LinkedList<>();
+    public Body parentBody;
 
     public Body(double x, double y){
         this.xMeters = x;

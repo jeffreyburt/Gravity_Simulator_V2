@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 public class GUI{
     public SimPanel simPanel;
@@ -31,15 +32,37 @@ public class GUI{
 
     public class SimPanel extends JPanel implements MouseMotionListener, MouseListener, ActionListener {
 
+        private BufferedImage futurePathImage;
+
+
         public void paintComponent(Graphics g){
             super.paintComponent(g);
+            if(Controller.computeFuturePath){
+                if(Controller.newImage){
+                    futurePathImage  = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+                    Graphics2D imageGraphics = futurePathImage.createGraphics();
+                    imageGraphics.setColor(Color.GREEN);
+                    for(Body body: Controller.bodies){
+                        if(body.futureCordList.size() > 0) {
+                            Coordinate firstCord = body.futureCordList.getFirst();
+                            for (Coordinate coordinate : body.futureCordList) {
+                                imageGraphics.drawLine((int) (firstCord.x / Controller.pixelsToMetersRatio),
+                                        (int) (firstCord.y / Controller.pixelsToMetersRatio),
+                                        (int) (coordinate.x / Controller.pixelsToMetersRatio),
+                                        (int) (coordinate.y / Controller.pixelsToMetersRatio));
+                                firstCord = coordinate;
+                            }
+                        }
+                    }
+                    Controller.newImage = false;
+                }
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.drawImage(futurePathImage, 0, 0, null);
+            }
             drawBodies(g);
 
         }
 
-        public void drawFrame(){
-            this.repaint();
-        }
 
         private void drawBodies(Graphics g){
             for(Body body: Controller.bodies){

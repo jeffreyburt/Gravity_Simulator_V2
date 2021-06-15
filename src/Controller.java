@@ -1,4 +1,5 @@
 import javax.swing.Timer;
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class Controller {
@@ -9,6 +10,9 @@ public class Controller {
     //todo make this a variable in the constructor?
     public static ArrayList<Body> bodies = new ArrayList<>();
     //todo do the final bit here or in the constructor?
+    public static boolean computeFuturePath = true;
+    public static boolean hasMoved = true;
+    public static boolean newImage = false;
 
     //parameters
     public static double xLimitMeters = 10000;
