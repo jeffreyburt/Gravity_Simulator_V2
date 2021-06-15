@@ -1,24 +1,28 @@
 public class Simulator implements Runnable {
 
-    private final double gravityConstant = 6.67430 * Math.pow(10, -1);
+    private final double gravityConstant = 6.67430e-11;
     //todo tweak this value
 
     public void run() {
-        while (Controller.simRunning) {
-            for (Body calcBody : Controller.bodies) {
-                for (Body otherBody : Controller.bodies) {
-                    if (calcBody != otherBody) {
-                        MyVector accelVector = calcAcceleration(calcBody, otherBody);
-                        //todo can change this to +=
-                        calcBody.velocityVector.x -= calcAccelWithUnits(accelVector.x);
-                        calcBody.velocityVector.y -= calcAccelWithUnits(accelVector.y);
+        while (true) {
+            if(Controller.simRunning) {
+                for (Body calcBody : Controller.bodies) {
+                    for (Body otherBody : Controller.bodies) {
+                        if (calcBody != otherBody) {
+                            MyVector accelVector = calcAcceleration(calcBody, otherBody);
+                            //todo can change this to +=
+                            calcBody.velocityVector.x -= calcAccelWithUnits(accelVector.x);
+                            calcBody.velocityVector.y -= calcAccelWithUnits(accelVector.y);
+                        }
                     }
                 }
-            }
 
-            for(Body body: Controller.bodies){
-                body.xMeters += calcAccelWithUnits(body.velocityVector.x);
-                body.yMeters += calcAccelWithUnits(body.velocityVector.y);
+                for (Body body : Controller.bodies) {
+                    if(!body.lockPos) {
+                        body.xMeters += calcAccelWithUnits(body.velocityVector.x);
+                        body.yMeters += calcAccelWithUnits(body.velocityVector.y);
+                    }
+                }
             }
 
             try {

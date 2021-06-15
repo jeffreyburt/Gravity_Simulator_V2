@@ -4,12 +4,24 @@ public class Body {
     //velocity is stored in Miles
     public MyVector velocityVector;
     public double massKG;
+    public boolean lockPos;
 
     public Body(double x, double y){
         this.xMeters = x;
         this.yMeters = y;
         velocityVector = new MyVector(1,1);
-        massKG = 10000;
+        lockPos = false;
+        massKG = 10000000;
     }
+
+    public Body(double x, double y, double mass){
+        this.xMeters = x;
+        this.yMeters = y;
+        velocityVector = new MyVector(1,1);
+        lockPos = false;
+        massKG = mass;
+    }
+
+
 
 }
