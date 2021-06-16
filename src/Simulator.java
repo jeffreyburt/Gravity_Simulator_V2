@@ -5,7 +5,12 @@ public class Simulator implements Runnable {
     private int futurePathDepth = 5000;
 
     private double gravityConstant = 6.67430e-11;
-    //todo tweak this value
+    //todo improve algorithm/ ask about big O complexity
+
+    private double simpleSofteningWeight = 1;
+
+
+    //todo weighting either neural net style or something else
 
     public void run() {
         while (true) {
@@ -78,7 +83,7 @@ public class Simulator implements Runnable {
     private MyVector calcAcceleration(Body body1, Body body2) {
         double totalMass = body1.massKG * body2.massKG;
         double distanceSquared = Math.pow(calcDistance(body1, body2), 2);
-        double totalAcceleration = gravityConstant * (totalMass / distanceSquared);
+        double totalAcceleration = gravityConstant * (totalMass / (distanceSquared + simpleSofteningWeight));
         totalAcceleration /= body1.massKG;
         MyVector betweenPointVector = new MyVector(body1, body2);
         MyVector accelVector = new MyVector(betweenPointVector.unitX * totalAcceleration, betweenPointVector.unitY * totalAcceleration);

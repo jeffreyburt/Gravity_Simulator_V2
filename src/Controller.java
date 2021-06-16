@@ -20,14 +20,14 @@ public class Controller {
 
 
     public static double initialVelocityLimit = 0;
-    public static int numNodes = 0;
+    public static int numNodes = 2;
 
     //pixel to meter ratio, multiple pixel value to get meter distance, divide meters to get pixel distance
     public static double pixelsToMetersRatio = 480590;
 
     //units: seconds per second
     //increase to increase the rate at which time passes
-    public static double timeMultiplier = 150000;
+    public static double timeMultiplier = 10000;
     ////////////////////////////////////////////////////////
 
 
@@ -36,14 +36,14 @@ public class Controller {
             bodies.add(genRandomBody());
         }
 
-        Body earth = new Body(400295176, 240295176, 5.972e24);
-        earth.lockPos = true;
-        bodies.add(earth);
-
-        Body moon = new Body(earth.xMeters - 240295176, earth.yMeters, 7.348e22);
-        moon.velocityVector.y = 1000;
-        bodies.add(moon);
-
+//        Body earth = new Body(400295176, 240295176, 5.972e24);
+//        earth.lockPos = true;
+//        bodies.add(earth);
+//
+//        Body moon = new Body(earth.xMeters - 240295176, earth.yMeters, 7.348e22);
+//        moon.velocityVector.y = 1000;
+//        bodies.add(moon);
+//
 //        Body moon2 = new Body(earth.xMeters + 240295176, earth.yMeters, 7.348e22);
 //        moon2.velocityVector.y = -1000;
 //        bodies.add(moon2);
