@@ -1,33 +1,36 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Simulator implements Runnable {
-    private int futurePathDepth = 2000;
+    private int futurePathDepth = 5000;
 
-    private final double gravityConstant = 6.67430e-11;
+    private double gravityConstant = 6.67430e-11;
     //todo tweak this value
 
     public void run() {
         while (true) {
             if (Controller.simRunning) {
                 calcFrameVelocityChange(Controller.bodies);
-                calcFrameLocationChange(Controller.bodies, true);
-            }
-            if (Controller.computeFuturePath && Controller.hasMoved) {
-                LinkedList<Body> copyLinedList = new LinkedList<>();
-                for (Body body : Controller.bodies) {
-                    Body copyBody = body;
-                    copyBody.parentBody = body;
-                    copyLinedList.add(copyBody);
-                }
-                for (int i = 0; i < futurePathDepth; i++) {
-                    calcFrameVelocityChange(copyLinedList);
-                    calcFrameLocationChange(copyLinedList, false);
+                calcFrameLocationChange(Controller.bodies, false);
+                Controller.hasMoved = true;
+            }else {
+                if (Controller.computeFuturePath && Controller.hasMoved) {
+                    LinkedList<Body> copyLinkedList = new LinkedList<>();
+                    for (Body body : Controller.bodies) {
+                        Body copyBody = new Body(body);
+                        copyLinkedList.add(copyBody);
+                        if(copyBody.futureCordList.size() > 0){
+                            copyBody.futureCordList.clear();
+                        }
+                    }
+                    for (int i = 0; i < futurePathDepth; i++) {
+                        calcFrameVelocityChange(copyLinkedList);
+                        calcFrameLocationChange(copyLinkedList, true);
 
+                    }
+                    Controller.newPath = true;
+                    Controller.hasMoved = false;
                 }
-                Controller.newImage = true;
-                Controller.hasMoved = false;
             }
 
 
@@ -39,32 +42,31 @@ public class Simulator implements Runnable {
         }
     }
 
-    private List<Body> calcFrameVelocityChange(List<Body> bodyList) {
+    private void calcFrameVelocityChange(List<Body> bodyList) {
         for (Body calcBody : bodyList) {
-            for (Body otherBody : Controller.bodies) {
+            for (Body otherBody : bodyList) {
                 if (calcBody != otherBody) {
                     MyVector accelVector = calcAcceleration(calcBody, otherBody);
-                    //todo can change this to +=
                     calcBody.velocityVector.x -= calcAccelWithUnits(accelVector.x);
                     calcBody.velocityVector.y -= calcAccelWithUnits(accelVector.y);
                 }
             }
         }
-        return bodyList;
     }
 
 
-    private List<Body> calcFrameLocationChange(List<Body> bodyList, boolean destrictuve) {
+    private void calcFrameLocationChange(List<Body> bodyList, boolean simulate) {
         for (Body body : bodyList) {
             if (!body.lockPos) {
                 body.xMeters += calcAccelWithUnits(body.velocityVector.x);
                 body.yMeters += calcAccelWithUnits(body.velocityVector.y);
-                if (!destrictuve) {
-                    body.parentBody.futureCordList.add(new Coordinate(body.xMeters, body.yMeters));
+                if (simulate) {
+                    //System.out.println("eep");
+                    body.futureCordList.add(new Coordinate(body.xMeters, body.yMeters));
+                    //System.out.println(body.xMeters);
                 }
             }
         }
-        return bodyList;
     }
 
     private double calcDistance(Body body1, Body body2) {

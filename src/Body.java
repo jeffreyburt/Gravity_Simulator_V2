@@ -11,7 +11,6 @@ public class Body {
     public double massKG;
     public boolean lockPos;
     public LinkedList<Coordinate> futureCordList = new LinkedList<>();
-    public Body parentBody;
 
     public Body(double x, double y){
         this.xMeters = x;
@@ -19,6 +18,15 @@ public class Body {
         velocityVector = new MyVector(1,1);
         lockPos = false;
         massKG = 10000000;
+    }
+
+    public Body(Body parentBody){
+        this.xMeters = parentBody.xMeters;
+        this.yMeters = parentBody.yMeters;
+        this.velocityVector = new MyVector(parentBody.velocityVector);
+        this.massKG = parentBody.massKG;
+        this.lockPos = parentBody.lockPos;
+        this.futureCordList = parentBody.futureCordList;
     }
 
     public Body(double x, double y, double mass){

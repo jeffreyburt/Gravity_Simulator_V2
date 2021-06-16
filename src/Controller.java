@@ -6,13 +6,13 @@ public class Controller {
     private static GUI gui;
     public static Runnable simulator;
     public static Thread simulatorThread;
-    public static boolean simRunning = false;
+    public static boolean simRunning = true;
     //todo make this a variable in the constructor?
     public static ArrayList<Body> bodies = new ArrayList<>();
     //todo do the final bit here or in the constructor?
     public static boolean computeFuturePath = true;
-    public static boolean hasMoved = true;
-    public static boolean newImage = false;
+    public static boolean hasMoved = false;
+    public static boolean newPath = false;
 
     //parameters
     public static double xLimitMeters = 10000;
@@ -36,7 +36,7 @@ public class Controller {
             bodies.add(genRandomBody());
         }
 
-        Body earth = new Body(240295176, 240295176, 5.972e24);
+        Body earth = new Body(400295176, 240295176, 5.972e24);
         earth.lockPos = true;
         bodies.add(earth);
 
@@ -44,6 +44,9 @@ public class Controller {
         moon.velocityVector.y = 1000;
         bodies.add(moon);
 
+        Body moon2 = new Body(earth.xMeters + 240295176, earth.yMeters, 7.348e22);
+        moon2.velocityVector.y = 1000;
+        bodies.add(moon2);
 
         gui = new GUI();
         simulator = new Simulator();

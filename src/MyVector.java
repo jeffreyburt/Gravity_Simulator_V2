@@ -5,6 +5,14 @@ public class MyVector {
     public double unitX;
     public double unitY;
 
+    public MyVector(MyVector parentVector){
+        this.x = parentVector.x;
+        this.y = parentVector.y;
+        this.magnitude = parentVector.magnitude;
+        this.unitX = parentVector.unitX;
+        this.unitY = parentVector.unitY;
+    }
+
     public MyVector(double x1, double x2, double y1, double y2){
         x = x2 - x1;
         y = y2 - y1;
@@ -31,6 +39,12 @@ public class MyVector {
     }
     private double calcAverage(double one, double two){
         return (one + two) / 2;
+    }
+
+    public void changeMagnitudePercent(double percent){
+        magnitude *= percent;
+        x *= unitX * magnitude;
+        y *= unitY * magnitude;
     }
 
 }
