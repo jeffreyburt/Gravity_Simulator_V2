@@ -17,7 +17,7 @@ public class Body {
         this.yMeters = y;
         velocityVector = new MyVector(1,1);
         lockPos = false;
-        massKG = 10000000;
+        massKG = 5e23;
     }
 
     public Body(Body parentBody){

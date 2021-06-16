@@ -15,7 +15,7 @@ public class Controller {
     public static boolean newPath = false;
 
     //parameters
-    public static double xLimitMeters = 10000;
+    public static double xLimitMeters = 5e8;
     public static double yLimitMeters = xLimitMeters;
 
 
@@ -27,7 +27,7 @@ public class Controller {
 
     //units: seconds per second
     //increase to increase the rate at which time passes
-    public static double timeMultiplier = 100000;
+    public static double timeMultiplier = 150000;
     ////////////////////////////////////////////////////////
 
 
@@ -44,9 +44,9 @@ public class Controller {
         moon.velocityVector.y = 1000;
         bodies.add(moon);
 
-        Body moon2 = new Body(earth.xMeters + 240295176, earth.yMeters, 7.348e22);
-        moon2.velocityVector.y = 1000;
-        bodies.add(moon2);
+//        Body moon2 = new Body(earth.xMeters + 240295176, earth.yMeters, 7.348e22);
+//        moon2.velocityVector.y = -1000;
+//        bodies.add(moon2);
 
         gui = new GUI();
         simulator = new Simulator();

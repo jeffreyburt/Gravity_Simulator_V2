@@ -40,6 +40,10 @@ public class GUI{
 
         private BufferedImage futurePathImage;
 
+        public SimPanel(){
+            setBackground(Color.BLACK);
+        }
+
 
         public void paintComponent(Graphics g){
             super.paintComponent(g);
@@ -49,9 +53,9 @@ public class GUI{
                 if(Controller.newPath){
                     futurePathImage  = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
                     Graphics2D imageGraphics = futurePathImage.createGraphics();
-                    imageGraphics.setColor(Color.LIGHT_GRAY);
-                    imageGraphics.fillRect(0,0,getWidth(), getHeight());
                     imageGraphics.setColor(Color.BLACK);
+                    imageGraphics.fillRect(0,0,getWidth(), getHeight());
+                    imageGraphics.setColor(Color.WHITE);
                     for(Body body: Controller.bodies){
                         if(body.futureCordList.size() > 0) {
                             Coordinate firstCord = body.futureCordList.getFirst();
@@ -77,16 +81,16 @@ public class GUI{
         private void drawBodies(Graphics g){
             for(Body body: Controller.bodies){
                      drawCenterCircle(body.xMeters / Controller.pixelsToMetersRatio, body.yMeters / Controller.pixelsToMetersRatio,
-                            bodyPixelSize, g);
+                            bodyPixelSize, g, Color.red);
             }
             if(selectedBody != null){
                 drawCenterCircle(selectedBody.xMeters / Controller.pixelsToMetersRatio, selectedBody.yMeters / Controller.pixelsToMetersRatio,
-                        bodyPixelSize, g);
+                        bodyPixelSize, g, Color.BLUE );
             }
         }
 
-        private void drawCenterCircle(double x, double y, int diameterPixels, Graphics g){
-            g.setColor(Color.RED);
+        private void drawCenterCircle(double x, double y, int diameterPixels, Graphics g, Color color){
+            g.setColor(color);
             g.fillOval((int)(x - ((double) diameterPixels * 0.5)),(int)(y - ((double) diameterPixels * 0.5)), diameterPixels, diameterPixels );
         }
 
@@ -105,11 +109,15 @@ public class GUI{
             double minDistance = Double.MAX_VALUE;
             for(Body body : Controller.bodies){
                 double distance = calcDistance(body, e);
+                System.out.println(distance);
                 if(distance <= minDistance){
                     closestBody = body;
+                    minDistance = distance;
                 }
             }
             selectedBody = closestBody;
+            System.out.println(closestBody);
+            //todo bug here
 
         }
         private double calcDistance(Body body, MouseEvent e) {
